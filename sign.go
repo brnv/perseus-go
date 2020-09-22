@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type perseusResponse struct {
@@ -37,7 +38,9 @@ func Sign(url string, query string) (string, string, error) {
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set("Content-Length", strconv.Itoa(len(payload)))
 
-	client := http.Client{}
+	client := http.Client{
+		Timeout: time.Second * 5,
+	}
 
 	response, err := client.Do(request)
 	if err != nil {
